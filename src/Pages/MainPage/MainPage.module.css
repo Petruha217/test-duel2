@@ -1,0 +1,27 @@
+.mainPage {
+  width: 1000px;
+  margin: 20px auto;
+  display: grid;
+  grid-template-columns: repeat(9, 100px);
+  grid-template-rows: repeat(6, 100px);
+}
+
+.canvas_wrapper {
+  grid-area: 1 / 2 / 7 / 9;
+}
+
+.button_wrapper {
+  grid-area: 6 / 4 / 7 / 7;
+  justify-self: center;
+  margin-top: 20px;
+}
+
+.colorsSpellLeft_wrapper {
+  grid-area: 1 / 1 / 3 / 2;
+  justify-self: right;
+}
+
+.colorsSpellRight_wrapper {
+  grid-area: 1 / 9 / 3 / 10;
+}
+

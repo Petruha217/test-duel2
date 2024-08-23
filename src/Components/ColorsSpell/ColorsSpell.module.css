@@ -1,0 +1,52 @@
+.colorsSpell {
+  display: flex;
+  flex-direction: column;
+  width: 54px;
+  height: 175px;
+  background-color: #dad5d5;
+  padding: 0px 20px 0 20px;
+}
+
+.input {
+  position: relative;
+  margin-bottom: 30px;
+  transition: all 0.2s;
+}
+
+.input:checked {
+  transform: scale(1.3);
+}
+
+.input::after {
+  content: '';
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  position: absolute;
+  top: -9px;
+  left: -9px;
+  cursor: pointer;
+}
+
+.red::after {
+  background-color: red;
+}
+
+.green::after {
+  background-color: green;
+}
+
+.yellow::after {
+  background-color: yellow;
+}
+
+.close {
+  font-size: 26px;
+  text-align: center;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.hidden {
+ display: none;
+}
