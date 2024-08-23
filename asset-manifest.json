@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/test-duel2/static/css/main.55333ad4.css",
+    "main.js": "/test-duel2/static/js/main.24f3bee8.js",
+    "index.html": "/test-duel2/index.html",
+    "main.55333ad4.css.map": "/test-duel2/static/css/main.55333ad4.css.map",
+    "main.24f3bee8.js.map": "/test-duel2/static/js/main.24f3bee8.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.55333ad4.css",
+    "static/js/main.24f3bee8.js"
+  ]
+}
