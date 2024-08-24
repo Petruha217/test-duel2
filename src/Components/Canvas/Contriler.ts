@@ -10,7 +10,8 @@ export class Controler {
   switchH: number
   title: 'скорость' | 'скорострельность'
   dX: number
-  down: boolean
+  downSwitch: boolean
+  downRange: boolean
 
   constructor(ctx: CanvasRenderingContext2D, side: 'left' | 'right', role: 'speed' | 'fire') {
     this.ctx = ctx;
@@ -24,7 +25,8 @@ export class Controler {
     this.switchH = 18;
     this.title = role === 'speed' ? 'скорость' : 'скорострельность'
     this.dX = 0;
-    this.down = false
+    this.downSwitch = false
+    this.downRange = false
   }
 
   create() {
@@ -48,7 +50,7 @@ export class Controler {
     this.ctx.fillText(`${this.title}`, this.rangeX, this.rangeY - 20)
   }
 
-  range() {
+  locationOnRange() {
     let xSwitchOnRange = this.switchX < this.rangeX + 24 ? 1 :
       this.switchX < this.rangeX + 48 ? 2 :
         this.switchX < this.rangeX + 72 ? 3 :
@@ -58,11 +60,15 @@ export class Controler {
 
   moveSwitch(x: number) {
     let res
-    if (this.down) {
+    if (this.downSwitch) {
       if (x - this.dX > this.rangeX && x - this.dX < this.rangeX + this.rangeW) {
         this.switchX = x - this.dX
-        res = this.range()
+        res = this.locationOnRange()
       }
+    }
+    if (this.downRange) {
+      this.switchX = x
+      res = this.locationOnRange()
     }
     return res
   }
@@ -72,11 +78,16 @@ export class Controler {
       y > this.switchY && y < this.switchY + this.switchH
     ) {
       this.dX = x - this.switchX
-      this.down = true
+      this.downSwitch = true
+    } else if (x > this.rangeX && x < this.rangeX + this.rangeW &&
+      y > this.rangeY && y < this.rangeY + this.rangeH
+    ) {
+      this.downRange = true
     }
   }
 
   setMouseUp() {
-    this.down = false
+    this.downSwitch = false
+    this.downRange = false
   }
 }

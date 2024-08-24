@@ -25,6 +25,7 @@ export const Canvas: FC<CanvasProps> = memo(({ isRuning, colorSpell, className, 
 
   const handlerMouseDown = useCallback((e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
     myGame.checkCursorAndSwitchs(e.nativeEvent.offsetX, e.nativeEvent.offsetY)
+    myGame.moveSwitchs(e.nativeEvent.offsetX)
   }, [])
 
   const handlerMouseUp = useCallback((e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
