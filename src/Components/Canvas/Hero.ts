@@ -1,8 +1,11 @@
 import { Spell } from "./Spell"
 import { ScoreCell } from "./ScoreCell"
+import { Controler } from "./Contriler"
 
 export class Hero {
   scoreCell: ScoreCell
+  controlerSpeed: Controler
+  controlerFire: Controler
   arrSpell: Spell[]
   canvas: HTMLCanvasElement
   ctx: CanvasRenderingContext2D
@@ -11,7 +14,6 @@ export class Hero {
   x: 30 | 670
   y: number
   r: number
-  anticlockwise: boolean
   velocity: number
   dy: number
   color: 'blue' | 'grey'
@@ -19,10 +21,12 @@ export class Hero {
   rateOfFire: number
   direction: string
   notFire: boolean
-  xMouse: number
-  yMouse: number
+  mouseCood: { x: number, y: number }
+
   constructor(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, side: 'left' | 'right') {
     this.scoreCell = new ScoreCell(ctx, side)
+    this.controlerSpeed = new Controler(ctx, side, 'speed')
+    this.controlerFire = new Controler(ctx, side, 'fire')
     this.arrSpell = [];
     this.canvas = canvas;
     this.ctx = ctx;
@@ -31,7 +35,6 @@ export class Hero {
     this.x = side === 'left' ? 30 : 670;
     this.y = 90;
     this.r = 29;
-    this.anticlockwise = true;
     this.velocity = 1;
     this.dy = 0;
     this.color = side === 'left' ? 'blue' : 'grey';
@@ -39,14 +42,13 @@ export class Hero {
     this.rateOfFire = 0;
     this.direction = 'down';
     this.notFire = true;
-    this.xMouse = -1;
-    this.yMouse = -1;
+    this.mouseCood = { x: -1, y: -1 };
   }
 
   createHero() {
     this.ctx.fillStyle = this.color
     this.ctx.beginPath()
-    this.ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2, this.anticlockwise)
+    this.ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2, true)
     this.ctx.stroke()
     this.ctx.fill()
     this.ctx.fillStyle = 'black'
@@ -57,6 +59,26 @@ export class Hero {
   start() {
     this.dy = this.velocity
     this.notFire = false
+  }
+
+  update() {
+    this.move()
+    this.collideWithBorder()
+    this.collideWithCursor()
+    this.createArrSpell()
+    this.moveSpell()
+  }
+
+  create() {
+    this.createHero()
+    this.createSpells()
+    this.controlerSpeed.create()
+    this.controlerFire.create()
+  }
+
+  setMouseUp() {
+    this.controlerSpeed.setMouseUp()
+    this.controlerFire.setMouseUp()
   }
 
   move() {
@@ -97,17 +119,17 @@ export class Hero {
   }
 
   checkIsCollideWithCursor() {
-    const difY = Math.abs(this.y - this.yMouse)
+    const difY = Math.abs(this.y - this.mouseCood.y)
     const difX = Math.sqrt(Math.pow(this.r, 2) - Math.pow(difY, 2))
     const xMin = this.x - difX
     const xMax = this.x + difX
     const yTop = this.y - this.r
     const yBottom = this.y + this.r
 
-    if (this.xMouse > xMin && this.xMouse < xMax) {
-      if (this.yMouse < this.y && this.yMouse > yTop) {
+    if (this.mouseCood.x > xMin && this.mouseCood.x < xMax) {
+      if (this.mouseCood.y < this.y && this.mouseCood.y > yTop) {
         return 'top'
-      } else if (this.yMouse < yBottom && this.yMouse > this.y) {
+      } else if (this.mouseCood.y < yBottom && this.mouseCood.y > this.y) {
         return 'bottom'
       }
     }
@@ -156,6 +178,22 @@ export class Hero {
     const distance = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2))
     if (distance < this.r + spellCood.r) {
       return true
+    }
+  }
+
+  checkCursorAndSwitchs(x: number, y: number) {
+    this.controlerSpeed.checkCursorAndSwitch(x, y)
+    this.controlerFire.checkCursorAndSwitch(x, y)
+  }
+
+  moveSwitchs(x: number) {
+    let speedL = this.controlerSpeed.moveSwitch(x)
+    if (speedL) {
+      this.velocity = speedL
+    }
+    let fireL = this.controlerFire.moveSwitch(x)
+    if (fireL) {
+      this.rateOfFire = fireL
     }
   }
 }
