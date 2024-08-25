@@ -1,7 +1,7 @@
 import { memo, useEffect, useRef, FC } from 'react'
 import style from './Canvas.module.css'
 import clsx from 'clsx'
-import { Game } from './Game'
+import { Game } from './game'
 
 interface InitialCanvasProps {
   className?: string
