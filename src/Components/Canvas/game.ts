@@ -1,5 +1,4 @@
 import { Hero } from './Hero'
-import { ScoreCell } from './ScoreCell'
 import { Controler } from './Contriler'
 
 export class Game {
@@ -7,8 +6,6 @@ export class Game {
   ctx: CanvasRenderingContext2D
   leftHero: Hero
   rightHero: Hero
-  leftScoreCell: ScoreCell
-  rightScoreCell: ScoreCell
   leftSpeedControler: Controler
   leftFireControler: Controler
   rightSpeedControler: Controler
@@ -22,8 +19,6 @@ export class Game {
     this.ctx = ctx;
     this.leftHero = new Hero(this.ctx, this.canvas, 'left');
     this.rightHero = new Hero(this.ctx, this.canvas, 'right')
-    this.leftScoreCell = new ScoreCell(this.ctx, 'left')
-    this.rightScoreCell = new ScoreCell(this.ctx, 'right')
     this.leftSpeedControler = new Controler(this.ctx, 'left', 'speed')
     this.leftFireControler = new Controler(this.ctx, 'left', 'fire')
     this.rightSpeedControler = new Controler(this.ctx, 'right', 'speed')
@@ -58,8 +53,7 @@ export class Game {
   hitToHero() {
     this.rightHero.arrSpell = this.rightHero.arrSpell.filter((spell) => {
       if (this.leftHero.checkGetHitBySpell(spell)) {
-        ++this.rightScore
-        ++this.rightScoreCell.score
+        ++this.leftHero.scoreCell.score
       }
       if (this.leftHero.checkGetHitBySpell(spell) || spell.x < 10) {
         return false
@@ -70,8 +64,7 @@ export class Game {
 
     this.leftHero.arrSpell = this.leftHero.arrSpell.filter((spell) => {
       if (this.rightHero.checkGetHitBySpell(spell)) {
-        ++this.leftScore
-        ++this.leftScoreCell.score
+        ++this.rightHero.scoreCell.score
       }
       if (this.rightHero.checkGetHitBySpell(spell) || spell.x > 690) {
         return false
@@ -143,8 +136,6 @@ export class Game {
     this.rightHero.createHero()
     this.leftHero.createSpells()
     this.rightHero.createSpells()
-    this.leftScoreCell.create()
-    this.rightScoreCell.create()
     this.controlersCreate()
 
   }

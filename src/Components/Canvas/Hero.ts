@@ -1,6 +1,8 @@
 import { Spell } from "./Spell"
+import { ScoreCell } from "./ScoreCell"
 
 export class Hero {
+  scoreCell: ScoreCell
   arrSpell: Spell[]
   canvas: HTMLCanvasElement
   ctx: CanvasRenderingContext2D
@@ -20,6 +22,7 @@ export class Hero {
   xMouse: number
   yMouse: number
   constructor(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, side: 'left' | 'right') {
+    this.scoreCell = new ScoreCell(ctx, side)
     this.arrSpell = [];
     this.canvas = canvas;
     this.ctx = ctx;
@@ -46,6 +49,9 @@ export class Hero {
     this.ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2, this.anticlockwise)
     this.ctx.stroke()
     this.ctx.fill()
+    this.ctx.fillStyle = 'black'
+
+    this.scoreCell.create()
   }
 
   start() {
